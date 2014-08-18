@@ -20,14 +20,10 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
-
 }
 
-
 -(void)deleteDefaults{
-    
-    [self quitApplicationIfRunning:@"com.apple.Safari"];
-    
+ 
     NSString *commandString = [NSString stringWithFormat:@"defaults delete com.apple.Safari"];
     NSString *text = [self runAsCommand:commandString];
     NSLog(@"text %@",text);
@@ -39,32 +35,82 @@
     [self addTopSites];
 }
 
--(IBAction)disablePopUpBlocker:(id)sender {
+-(IBAction)manageExceptions:(id)sender {
     
+    [self quitApplicationIfRunning:@"com.apple.Safari"];
+  
     [self deleteDefaults];
     
-   NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically 1"];
+    [self allowPopUpBlocker:YES];
+    [self allowPlugins:YES];
+    [self allowJava:YES];
     
-   NSString *text = [self runAsCommand:commandString];
+   
+}
+
+-(IBAction)deleteCache:(id)sender {
+    
+    [self quitApplicationIfRunning:@"com.apple.Safari"];
+    
+    [self deleteCacheAndTempFile];
+}
+
+-(IBAction)allowCookies:(id)sender {
+    
+    [self quitApplicationIfRunning:@"com.apple.Safari"];
+    
+    [self manageCookies:0];
+}
+
+-(void)manageCookies:(short)option{
+    
+    NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2StorageBlockingPolicy %d",option];
+    
+    NSString *text = [self runAsCommand:commandString];
+    NSLog(@"text %@",text);
+    
+    commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitStorageBlockingPolicy %d",option];
+    
+    text = [self runAsCommand:commandString];
     NSLog(@"text %@",text);
 
 }
 
-
--(IBAction)AllowPlugins:(id)sender {
+-(void)allowPopUpBlocker:(BOOL)willAllowed{
  
+    NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically %d",willAllowed];
     
+    NSString *text = [self runAsCommand:commandString];
+    NSLog(@"text %@",text);
 }
 
+-(void)allowPlugins:(BOOL)willAllowed {
+ 
+    NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitJavaEnabled 1"];
+    
+    NSString *text = [self runAsCommand:commandString];
+    NSLog(@"text %@",text);
+
+    //Safari	Enable plugins
+    commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitPluginsEnabled 1"];
+    text = [self runAsCommand:commandString];
+    NSLog(@"text %@",text);
+}
+
+-(void)allowJava:(BOOL)willAllowed {
+
+    //Safari	Enable plugins
+    NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitJavaEnabled 1"];
+    NSString *text = [self runAsCommand:commandString];
+    NSLog(@"text %@",text);
+}
 
 -(NSArray *)listOfSites{
 
     return [NSArray arrayWithObjects:@"http://www.pearsoncmg.com",@"http://www.pearsoned.com",@"http://www.ecollege.com", nil];
 }
 
-
 -(NSArray *)nameOfSites{
-    
     return [NSArray arrayWithObjects:@"Pearson cmg",@"Pearson ed ",@"Ecollege", nil];
 }
 
@@ -158,6 +204,44 @@
     return [[NSString alloc] initWithData:[file readDataToEndOfFile] encoding:NSUTF8StringEncoding];
 }
 
+- (BOOL)deleteCacheAndTempFile{
+    
+    // Delete Cache and temporary files.
+    BOOL isDeleted = NO;
+    BOOL isDir;
+    NSFileManager *fileManager = [NSFileManager  defaultManager];
+    NSString* cachePath = [NSString stringWithFormat:@"%@/Library/Caches/com.apple.Safari/",NSHomeDirectory()];
+    
+    BOOL exists = [fileManager fileExistsAtPath:cachePath isDirectory:&isDir];
+    if (exists) {
+        if (isDir) {
+            NSArray* allFolders = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:cachePath error:nil];
+            
+            if ([allFolders count] == 0) {
+                isDeleted = YES;
+            }else {
+                for (NSString *folderName in allFolders) {
+                    
+                    if (![folderName isEqualToString:@"Extensions"]) {
+                        NSError *error = nil;
+                        NSString *nextPath = [cachePath stringByAppendingPathComponent:folderName];
+                        //nextPath   = [nextPath stringByAppendingPathComponent:@"Cache"];
+                        isDeleted = [fileManager removeItemAtPath:nextPath error:&error];
+                        //NSLog(@"isDeleted %d error %@",isDeleted,error);
+                        if (error && isDeleted) {
+                            return NO;
+                        }else {
+                            isDeleted = YES;
+                        }
+                    }else {
+                        isDeleted = YES;
+                    }
+                }
+            }
+        }
+    }
+    return isDeleted;
+}
 
 
 @end

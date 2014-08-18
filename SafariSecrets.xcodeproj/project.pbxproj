@@ -164,8 +164,6 @@
 				1E6389E9199C8ECA00853E15 /* Sources */,
 				1E6389EA199C8ECA00853E15 /* Frameworks */,
 				1E6389EB199C8ECA00853E15 /* Resources */,
-				92F8B886199EB6A2003334E4 /* ShellScript */,
-				92F8B887199EB773003334E4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -249,37 +247,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		92F8B886199EB6A2003334E4 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "exec tools/safari_java_whitelist_firstboot.sh\nexit 1\n";
-			showEnvVarsInLog = 0;
-		};
-		92F8B887199EB773003334E4 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "exec tools/safari_set_java_whitelist_at_login.sh\nexit 1\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1E6389E9199C8ECA00853E15 /* Sources */ = {
