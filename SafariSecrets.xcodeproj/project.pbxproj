@@ -18,6 +18,10 @@
 		1E638A11199C8ECB00853E15 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6389F0199C8ECA00853E15 /* Cocoa.framework */; };
 		1E638A19199C8ECB00853E15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E638A17199C8ECB00853E15 /* InfoPlist.strings */; };
 		1E638A1B199C8ECB00853E15 /* SafariSecretsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E638A1A199C8ECB00853E15 /* SafariSecretsTests.m */; };
+		9249CE6019A26D840010ACE5 /* JCAppleScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 9249CE5E19A26D840010ACE5 /* JCAppleScript.m */; };
+		9249CE6119A26D840010ACE5 /* JCAppleScript.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 9249CE5F19A26D840010ACE5 /* JCAppleScript.podspec */; };
+		9249CE6519A282F70010ACE5 /* safari_Reset.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 9249CE6419A282F70010ACE5 /* safari_Reset.scpt */; };
+		9249CE6919A28AB40010ACE5 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9249CE6819A28AB40010ACE5 /* ApplicationServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +54,11 @@
 		1E638A16199C8ECB00853E15 /* SafariSecretsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SafariSecretsTests-Info.plist"; sourceTree = "<group>"; };
 		1E638A18199C8ECB00853E15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1E638A1A199C8ECB00853E15 /* SafariSecretsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SafariSecretsTests.m; sourceTree = "<group>"; };
+		9249CE5D19A26D840010ACE5 /* JCAppleScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCAppleScript.h; sourceTree = "<group>"; };
+		9249CE5E19A26D840010ACE5 /* JCAppleScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCAppleScript.m; sourceTree = "<group>"; };
+		9249CE5F19A26D840010ACE5 /* JCAppleScript.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = JCAppleScript.podspec; sourceTree = "<group>"; };
+		9249CE6419A282F70010ACE5 /* safari_Reset.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = safari_Reset.scpt; path = tools/safari_Reset.scpt; sourceTree = "<group>"; };
+		9249CE6819A28AB40010ACE5 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9249CE6919A28AB40010ACE5 /* ApplicationServices.framework in Frameworks */,
 				1E6389F1199C8ECA00853E15 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -76,6 +86,10 @@
 		1E6389E4199C8ECA00853E15 = {
 			isa = PBXGroup;
 			children = (
+				9249CE6419A282F70010ACE5 /* safari_Reset.scpt */,
+				9249CE5D19A26D840010ACE5 /* JCAppleScript.h */,
+				9249CE5E19A26D840010ACE5 /* JCAppleScript.m */,
+				9249CE5F19A26D840010ACE5 /* JCAppleScript.podspec */,
 				1E6389F6199C8ECA00853E15 /* SafariSecrets */,
 				1E638A14199C8ECB00853E15 /* SafariSecretsTests */,
 				1E6389EF199C8ECA00853E15 /* Frameworks */,
@@ -95,6 +109,7 @@
 		1E6389EF199C8ECA00853E15 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9249CE6819A28AB40010ACE5 /* ApplicationServices.framework */,
 				1E6389F0199C8ECA00853E15 /* Cocoa.framework */,
 				1E638A0F199C8ECB00853E15 /* XCTest.framework */,
 				1E6389F2199C8ECA00853E15 /* Other Frameworks */,
@@ -232,6 +247,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E6389FB199C8ECB00853E15 /* InfoPlist.strings in Resources */,
+				9249CE6519A282F70010ACE5 /* safari_Reset.scpt in Resources */,
+				9249CE6119A26D840010ACE5 /* JCAppleScript.podspec in Resources */,
 				1E638A09199C8ECB00853E15 /* Images.xcassets in Resources */,
 				1E638A01199C8ECB00853E15 /* Credits.rtf in Resources */,
 				1E638A07199C8ECB00853E15 /* MainMenu.xib in Resources */,
@@ -255,6 +272,7 @@
 			files = (
 				1E638A04199C8ECB00853E15 /* APLAppDelegate.m in Sources */,
 				1E6389FD199C8ECB00853E15 /* main.m in Sources */,
+				9249CE6019A26D840010ACE5 /* JCAppleScript.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

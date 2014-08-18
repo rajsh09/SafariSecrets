@@ -8,18 +8,39 @@
 
 #import "APLAppDelegate.h"
 
+
 #define PEARSON_CMG  @"*.pearsoncmg.com"
 #define PEARSON_ED   @"*.pearsoned.com"
 #define E_COLLEGE    @"*.ecollege.com"
 
 
 
+#import "JCAppleScript.h"
+
+
 
 @implementation APLAppDelegate
+
+
+-(NSString *)runScript {
+  
+   //NSString *path = [[NSBundle mainBundle] pathForResource:@"" ofType:@"scpt"];
+   
+  // NSLog(@"path %@",path);
+   
+   
+   
+   
+   [JCAppleScript runAppleScript:@"safari_Reset"];
+   
+   return nil;
+}
+
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
+   
 }
 
 -(void)deleteDefaults{
@@ -31,8 +52,10 @@
 
 -(IBAction)addTopSites:(id)sender {
     
-    [self quitApplicationIfRunning:@"com.apple.Safari"];
-    [self addTopSites];
+    //[self quitApplicationIfRunning:@"com.apple.Safari"];
+    //[self addTopSites];
+   
+   [self runScript];
 }
 
 -(IBAction)manageExceptions:(id)sender {
@@ -58,7 +81,10 @@
 -(IBAction)allowCookies:(id)sender {
     
     [self quitApplicationIfRunning:@"com.apple.Safari"];
-    
+   
+    [self deleteDefaults];
+   
+   
     [self manageCookies:0];
 }
 
