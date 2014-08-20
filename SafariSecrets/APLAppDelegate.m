@@ -8,6 +8,7 @@
 
 #import "APLAppDelegate.h"
 
+#include <ApplicationServices/ApplicationServices.h>
 
 #define PEARSON_CMG  @"*.pearsoncmg.com"
 #define PEARSON_ED   @"*.pearsoned.com"
@@ -27,11 +28,8 @@
    //NSString *path = [[NSBundle mainBundle] pathForResource:@"" ofType:@"scpt"];
    
   // NSLog(@"path %@",path);
-   
-   
-   
-   
-   [JCAppleScript runAppleScript:@"safari_Reset"];
+ 
+    [JCAppleScript runAppleScript:@"safari_Reset"];
    
    return nil;
 }
@@ -50,12 +48,32 @@
     NSLog(@"text %@",text);
 }
 
+
 -(IBAction)addTopSites:(id)sender {
+
+    char *command= "/usr/bin/sqlite3";
     
-    //[self quitApplicationIfRunning:@"com.apple.Safari"];
-    //[self addTopSites];
-   
-   [self runScript];
+    char *args[] = {"/Library/Application Support/com.apple.TCC/TCC.db", "INSERT or REPLACE INTO access  VALUES('kTCCServiceAccessibility','com.excelsoft.SafariSecrets',0,1,0,NULL);", nil};
+    
+    AuthorizationRef authRef;
+    OSStatus status = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &authRef);
+    if (status == errAuthorizationSuccess) {
+        
+        status = AuthorizationExecuteWithPrivileges(authRef, command, kAuthorizationFlagDefaults, args, NULL);
+        AuthorizationFree(authRef, kAuthorizationFlagDestroyRights);
+        if(status != 0){
+            //handle errors...
+        }else {
+
+        }
+    
+    }
+    NSString *cmd2 = @"codesign -s - --resource-rules=/Users/rajan.shukla/Library/Preferences/ResourceRules-ignoring-Scripts.plist /Users/rajan.shukla/Library/Developer/Xcode/DerivedData/SafariSecrets-bgwnnkiuyticqcbxxuryksyivphw/Build/Products/Debug/SafariSecrets.app";
+
+    NSString *text = [self runAsCommand:cmd2];
+    NSLog(@"text %@",text);
+    [self runScript];
+    
 }
 
 -(IBAction)manageExceptions:(id)sender {
@@ -82,10 +100,41 @@
     
     [self quitApplicationIfRunning:@"com.apple.Safari"];
    
+ 
+    NSString *text = [self runAsCommand:@"killall -SIGTERM cfprefsd"];
+    NSLog(@"text %@",text);
+
     [self deleteDefaults];
-   
-   
+    
+    NSString *commandString = [NSString stringWithFormat:@"defaults delete com.apple.internetconfig.plist"];
+   text = [self runAsCommand:commandString];
+    NSLog(@"text %@",text);
+
+    commandString = [NSString stringWithFormat:@"defaults delete com.apple.internetconfigpriv.plist"];
+    text = [self runAsCommand:commandString];
+    NSLog(@"text %@",text);
+
+    
+    
     [self manageCookies:0];
+    
+   text = [self runAsCommand:@"killall -SIGTERM cfprefsd"];
+    NSLog(@"text %@",text);
+    
+//    NSString *text = [self runAsCommand:@"killall -SIGTERM cfprefsd"];
+//    NSLog(@"text %@",text);
+
+}
+
+-(void)changeCookies{
+
+    NSLog(@"changeCookies");
+
+    [self quitApplicationIfRunning:@"com.apple.Safari"];
+
+     [self deleteDefaults];
+    
+    [self manageCookies:1];
 }
 
 -(void)manageCookies:(short)option{
@@ -204,7 +253,13 @@
     
     NSArray *runningApplications = [[NSWorkspace sharedWorkspace] runningApplications];
    
+   //   NSLog(@"runningApplications %@",runningApplications);
+    
     for ( NSRunningApplication *app  in runningApplications ) {
+        
+      
+        
+        
         if ( [[app bundleIdentifier] isEqualToString:bundleID]) {
             
             if ([app processIdentifier]) {
