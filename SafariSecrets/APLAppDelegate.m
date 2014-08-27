@@ -13,7 +13,7 @@
 #define PEARSON_ED   @"*.pearsoned.com"
 #define E_COLLEGE    @"*.ecollege.com"
 
-
+#import <Python/Python.h>
 
 #import "JCAppleScript.h"
 
@@ -53,7 +53,7 @@
 -(IBAction)addTopSites:(id)sender {
     
     //[self quitApplicationIfRunning:@"com.apple.Safari"];
-    //[self addTopSites];
+   // [self addTopSites];
    
    [self runScript];
 }
@@ -63,7 +63,7 @@
     [self quitApplicationIfRunning:@"com.apple.Safari"];
   
     [self deleteDefaults];
-    
+   
     [self allowPopUpBlocker:YES];
     [self allowPlugins:YES];
     [self allowJava:YES];
@@ -82,20 +82,42 @@
     
     [self quitApplicationIfRunning:@"com.apple.Safari"];
    
-    [self deleteDefaults];
+   [self quitApplicationIfRunning:@"com.apple.WebFoundation"];
    
    
-    [self manageCookies:0];
+ //    NSString *text = [self runAsCommand:@"killall cfprefsd"];
+ //    NSLog(@"text %@",text);
+   
+   NSString *commandString = [NSString stringWithFormat:@"defaults delete com.apple.WebFoundation"];
+  NSString *text = [self runAsCommand:commandString];
+   NSLog(@"text %@",text);
+
+   [self deleteDefaults];
+
+   
+//   commandString = [NSString stringWithFormat:@"defaults delete com.apple.WebFoundation"];
+//   text = [self runAsCommand:commandString];
+//   NSLog(@"text %@",text);
+   
+   commandString = [NSString stringWithFormat:@"defaults write com.apple.WebFoundation NSHTTPAcceptCookies 'always' "];
+   text = [self runAsCommand:commandString];
+   NSLog(@"text %@",text);
+   
+   commandString = [NSString stringWithFormat:@"defaults write com.apple.WebFoundation WebAcceptCookies 1"];
+   text = [self runAsCommand:commandString];
+   NSLog(@"text %@",text);
+
+   [self manageCookies:1];
 }
 
 -(void)manageCookies:(short)option{
     
-    NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2StorageBlockingPolicy %d",option];
+    NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2StorageBlockingPolicy -int %d",option];
     
     NSString *text = [self runAsCommand:commandString];
     NSLog(@"text %@",text);
     
-    commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitStorageBlockingPolicy %d",option];
+    commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitStorageBlockingPolicy -int %d",option];
     
     text = [self runAsCommand:commandString];
     NSLog(@"text %@",text);

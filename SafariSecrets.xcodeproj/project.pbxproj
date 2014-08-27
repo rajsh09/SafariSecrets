@@ -11,7 +11,6 @@
 		1E6389FB199C8ECB00853E15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E6389F9199C8ECB00853E15 /* InfoPlist.strings */; };
 		1E6389FD199C8ECB00853E15 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E6389FC199C8ECB00853E15 /* main.m */; };
 		1E638A01199C8ECB00853E15 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 1E6389FF199C8ECB00853E15 /* Credits.rtf */; };
-		1E638A04199C8ECB00853E15 /* APLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E638A03199C8ECB00853E15 /* APLAppDelegate.m */; };
 		1E638A07199C8ECB00853E15 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1E638A05199C8ECB00853E15 /* MainMenu.xib */; };
 		1E638A09199C8ECB00853E15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E638A08199C8ECB00853E15 /* Images.xcassets */; };
 		1E638A10199C8ECB00853E15 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E638A0F199C8ECB00853E15 /* XCTest.framework */; };
@@ -21,7 +20,7 @@
 		9249CE6019A26D840010ACE5 /* JCAppleScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 9249CE5E19A26D840010ACE5 /* JCAppleScript.m */; };
 		9249CE6119A26D840010ACE5 /* JCAppleScript.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 9249CE5F19A26D840010ACE5 /* JCAppleScript.podspec */; };
 		9249CE6519A282F70010ACE5 /* safari_Reset.scpt in Resources */ = {isa = PBXBuildFile; fileRef = 9249CE6419A282F70010ACE5 /* safari_Reset.scpt */; };
-		9249CE6919A28AB40010ACE5 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9249CE6819A28AB40010ACE5 /* ApplicationServices.framework */; };
+		926B94FA19A3ABA200A58BE3 /* APLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 926B94F919A3ABA200A58BE3 /* APLAppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +45,6 @@
 		1E6389FE199C8ECB00853E15 /* SafariSecrets-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SafariSecrets-Prefix.pch"; sourceTree = "<group>"; };
 		1E638A00199C8ECB00853E15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		1E638A02199C8ECB00853E15 /* APLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APLAppDelegate.h; sourceTree = "<group>"; };
-		1E638A03199C8ECB00853E15 /* APLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = APLAppDelegate.m; sourceTree = "<group>"; };
 		1E638A06199C8ECB00853E15 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		1E638A08199C8ECB00853E15 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1E638A0E199C8ECB00853E15 /* SafariSecretsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SafariSecretsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,7 +56,7 @@
 		9249CE5E19A26D840010ACE5 /* JCAppleScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCAppleScript.m; sourceTree = "<group>"; };
 		9249CE5F19A26D840010ACE5 /* JCAppleScript.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = JCAppleScript.podspec; sourceTree = "<group>"; };
 		9249CE6419A282F70010ACE5 /* safari_Reset.scpt */ = {isa = PBXFileReference; lastKnownFileType = file; name = safari_Reset.scpt; path = tools/safari_Reset.scpt; sourceTree = "<group>"; };
-		9249CE6819A28AB40010ACE5 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		926B94F919A3ABA200A58BE3 /* APLAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APLAppDelegate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +64,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9249CE6919A28AB40010ACE5 /* ApplicationServices.framework in Frameworks */,
 				1E6389F1199C8ECA00853E15 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,7 +106,6 @@
 		1E6389EF199C8ECA00853E15 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9249CE6819A28AB40010ACE5 /* ApplicationServices.framework */,
 				1E6389F0199C8ECA00853E15 /* Cocoa.framework */,
 				1E638A0F199C8ECB00853E15 /* XCTest.framework */,
 				1E6389F2199C8ECA00853E15 /* Other Frameworks */,
@@ -130,8 +126,8 @@
 		1E6389F6199C8ECA00853E15 /* SafariSecrets */ = {
 			isa = PBXGroup;
 			children = (
+				926B94F919A3ABA200A58BE3 /* APLAppDelegate.m */,
 				1E638A02199C8ECB00853E15 /* APLAppDelegate.h */,
-				1E638A03199C8ECB00853E15 /* APLAppDelegate.m */,
 				1E638A05199C8ECB00853E15 /* MainMenu.xib */,
 				1E638A08199C8ECB00853E15 /* Images.xcassets */,
 				1E6389F7199C8ECB00853E15 /* Supporting Files */,
@@ -179,6 +175,7 @@
 				1E6389E9199C8ECA00853E15 /* Sources */,
 				1E6389EA199C8ECA00853E15 /* Frameworks */,
 				1E6389EB199C8ECA00853E15 /* Resources */,
+				925B64A619A3A24100A14A01 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -265,13 +262,30 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		925B64A619A3A24100A14A01 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\n# Get the username of the currently logged in user\nloggedInUser=`/bin/ls -l /dev/console | /usr/bin/awk '{ print $3 }'`\n\n#################\n# Allow the Microsoft Sharepoint Plug-In\n#################\n/usr/libexec/plistbuddy -c \"delete ManagedPlugInPolicies:com.microsoft.sharepoint.browserplugin\" /Users/$loggedInUser/Library/Preferences/com.apple.Safari.plist\n/usr/libexec/plistbuddy -c \"add ManagedPlugInPolicies:com.microsoft.sharepoint.browserplugin dict\" /Users/$loggedInUser/Library/Preferences/com.apple.Safari.plist\n/usr/libexec/plistbuddy -c \"add ManagedPlugInPolicies:com.microsoft.sharepoint.browserplugin:PlugInFirstVisitPolicy string PlugInPolicyAllowNoSecurityRestrictions\" /Users/$loggedInUser/Library/Preferences/com.apple.Safari.plist";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1E6389E9199C8ECA00853E15 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E638A04199C8ECB00853E15 /* APLAppDelegate.m in Sources */,
 				1E6389FD199C8ECB00853E15 /* main.m in Sources */,
+				926B94FA19A3ABA200A58BE3 /* APLAppDelegate.m in Sources */,
 				9249CE6019A26D840010ACE5 /* JCAppleScript.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -408,6 +422,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SafariSecrets/SafariSecrets-Prefix.pch";
 				INFOPLIST_FILE = "SafariSecrets/SafariSecrets-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -421,6 +436,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SafariSecrets/SafariSecrets-Prefix.pch";
 				INFOPLIST_FILE = "SafariSecrets/SafariSecrets-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
