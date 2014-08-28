@@ -13,6 +13,7 @@
 #define PEARSON_ED   @"*.pearsoned.com"
 #define E_COLLEGE    @"*.ecollege.com"
 
+#import "JCAppleScript.h"
 
 @implementation APLAppDelegate
 
@@ -82,7 +83,7 @@
     [self quitApplicationIfRunning:@"com.apple.Safari"];
     
     [self deleteDefaults];
-    
+   
     [self allowPopUpBlocker:YES];
     [self allowPlugins:YES];
     [self allowJava:YES];
@@ -110,7 +111,6 @@
     NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.WebFoundation NSHTTPAcceptCookies 'always' "];
     text = [self runAsCommand:commandString];
     NSLog(@"text %@",text);
-    
     [self manageCookies:0];
 }
 
