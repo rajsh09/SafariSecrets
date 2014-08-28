@@ -102,7 +102,7 @@
 -(IBAction)allowCookies:(id)sender {
     
     [self quitApplicationIfRunning:@"com.apple.Safari"];
-    [self performSelector:@selector(setCookies) withObject:nil afterDelay:0.0];
+    [self setCookies];
     
     NSString *text =nil;
     //    text = [self runAsCommand:@"killall cfprefsd"];
