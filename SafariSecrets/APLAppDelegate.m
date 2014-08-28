@@ -8,85 +8,87 @@
 
 #import "APLAppDelegate.h"
 
-#include <ApplicationServices/ApplicationServices.h>
 
 #define PEARSON_CMG  @"*.pearsoncmg.com"
 #define PEARSON_ED   @"*.pearsoned.com"
 #define E_COLLEGE    @"*.ecollege.com"
 
 
-
-#import "JCAppleScript.h"
-
-
-
 @implementation APLAppDelegate
 
 
 -(NSString *)runScript {
-  
-   //NSString *path = [[NSBundle mainBundle] pathForResource:@"" ofType:@"scpt"];
-   
-  // NSLog(@"path %@",path);
- 
-    [JCAppleScript runAppleScript:@"safari_Reset"];
-   
-   return nil;
+    
+    //NSString *path = [[NSBundle mainBundle] pathForResource:@"" ofType:@"scpt"];
+    
+    // NSLog(@"path %@",path);
+    
+    return nil;
 }
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
-   
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cookiesSetingsChanged) name:NSHTTPCookieManagerAcceptPolicyChangedNotification object:nil];
 }
 
+-(void)cookiesSetingsChanged{
+    NSLog(@"cookiesSetingsChanged  NSNotification %lu",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookieAcceptPolicy]);
+}
+
+
+-(void)openSafari{
+    [self runAsCommand:@"open -b com.apple.Safari"];
+}
+
+-(void)addCookies {
+    
+    NSLog(@"cookies  %lu",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookieAcceptPolicy]);
+    
+    
+    [[NSHTTPCookieStorage sharedHTTPCookieStorage]
+     setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+    
+}
+
+-(void)resetCookies{
+    [self quitApplicationIfRunning:@"com.apple.Safari"];
+    [self setCookies];
+}
+
+-(void)setCookies{
+    
+    NSLog(@"Cookies has been changed %lu",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookieAcceptPolicy]);
+    [[NSHTTPCookieStorage sharedHTTPCookieStorage]  setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSHTTPCookieManagerAcceptPolicyChangedNotification object:self userInfo:nil];
+}
+
+
 -(void)deleteDefaults{
- 
+    
     NSString *commandString = [NSString stringWithFormat:@"defaults delete com.apple.Safari"];
     NSString *text = [self runAsCommand:commandString];
     NSLog(@"text %@",text);
 }
 
-
 -(IBAction)addTopSites:(id)sender {
-
-    char *command= "/usr/bin/sqlite3";
-    
-    char *args[] = {"/Library/Application Support/com.apple.TCC/TCC.db", "INSERT or REPLACE INTO access  VALUES('kTCCServiceAccessibility','com.excelsoft.SafariSecrets',0,1,0,NULL);", nil};
-    
-    AuthorizationRef authRef;
-    OSStatus status = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &authRef);
-    if (status == errAuthorizationSuccess) {
-        
-        status = AuthorizationExecuteWithPrivileges(authRef, command, kAuthorizationFlagDefaults, args, NULL);
-        AuthorizationFree(authRef, kAuthorizationFlagDestroyRights);
-        if(status != 0){
-            //handle errors...
-        }else {
-
-        }
-    
-    }
-    NSString *cmd2 = @"codesign -s - --resource-rules=/Users/rajan.shukla/Library/Preferences/ResourceRules-ignoring-Scripts.plist /Users/rajan.shukla/Library/Developer/Xcode/DerivedData/SafariSecrets-bgwnnkiuyticqcbxxuryksyivphw/Build/Products/Debug/SafariSecrets.app";
-
-    NSString *text = [self runAsCommand:cmd2];
-    NSLog(@"text %@",text);
-    [self runScript];
-    
+    [self quitApplicationIfRunning:@"com.apple.Safari"];
+    [self addTopSites];
 }
 
 -(IBAction)manageExceptions:(id)sender {
     
     [self quitApplicationIfRunning:@"com.apple.Safari"];
-  
+    
     [self deleteDefaults];
     
     [self allowPopUpBlocker:YES];
     [self allowPlugins:YES];
     [self allowJava:YES];
     
-   
+    
+    
 }
 
 -(IBAction)deleteCache:(id)sender {
@@ -99,60 +101,35 @@
 -(IBAction)allowCookies:(id)sender {
     
     [self quitApplicationIfRunning:@"com.apple.Safari"];
-   
- 
-    NSString *text = [self runAsCommand:@"killall -SIGTERM cfprefsd"];
-    NSLog(@"text %@",text);
-
-    [self deleteDefaults];
+    [self performSelector:@selector(setCookies) withObject:nil afterDelay:0.0];
     
-    NSString *commandString = [NSString stringWithFormat:@"defaults delete com.apple.internetconfig.plist"];
-   text = [self runAsCommand:commandString];
-    NSLog(@"text %@",text);
-
-    commandString = [NSString stringWithFormat:@"defaults delete com.apple.internetconfigpriv.plist"];
+    NSString *text =nil;
+    //    text = [self runAsCommand:@"killall cfprefsd"];
+    //    NSLog(@"text %@",text);
+    
+    NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.WebFoundation NSHTTPAcceptCookies 'always' "];
     text = [self runAsCommand:commandString];
     NSLog(@"text %@",text);
-
-    
     
     [self manageCookies:0];
-    
-   text = [self runAsCommand:@"killall -SIGTERM cfprefsd"];
-    NSLog(@"text %@",text);
-    
-//    NSString *text = [self runAsCommand:@"killall -SIGTERM cfprefsd"];
-//    NSLog(@"text %@",text);
-
-}
-
--(void)changeCookies{
-
-    NSLog(@"changeCookies");
-
-    [self quitApplicationIfRunning:@"com.apple.Safari"];
-
-     [self deleteDefaults];
-    
-    [self manageCookies:1];
 }
 
 -(void)manageCookies:(short)option{
     
-    NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2StorageBlockingPolicy %d",option];
+    NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2StorageBlockingPolicy -int %d",option];
     
     NSString *text = [self runAsCommand:commandString];
     NSLog(@"text %@",text);
     
-    commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitStorageBlockingPolicy %d",option];
+    commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitStorageBlockingPolicy -int %d",option];
     
     text = [self runAsCommand:commandString];
     NSLog(@"text %@",text);
-
+    
 }
 
 -(void)allowPopUpBlocker:(BOOL)willAllowed{
- 
+    
     NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically %d",willAllowed];
     
     NSString *text = [self runAsCommand:commandString];
@@ -160,12 +137,12 @@
 }
 
 -(void)allowPlugins:(BOOL)willAllowed {
- 
+    
     NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitJavaEnabled 1"];
     
     NSString *text = [self runAsCommand:commandString];
     NSLog(@"text %@",text);
-
+    
     //Safari	Enable plugins
     commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitPluginsEnabled 1"];
     text = [self runAsCommand:commandString];
@@ -173,7 +150,7 @@
 }
 
 -(void)allowJava:(BOOL)willAllowed {
-
+    
     //Safari	Enable plugins
     NSString *commandString = [NSString stringWithFormat:@"defaults write com.apple.Safari WebKitJavaEnabled 1"];
     NSString *text = [self runAsCommand:commandString];
@@ -181,7 +158,7 @@
 }
 
 -(NSArray *)listOfSites{
-
+    
     return [NSArray arrayWithObjects:@"http://www.pearsoncmg.com",@"http://www.pearsoned.com",@"http://www.ecollege.com", nil];
 }
 
@@ -191,11 +168,11 @@
 
 -(NSMutableDictionary *)removeBanndURLS:(NSMutableDictionary *)bannedURLMap{
     
-   NSArray *arr = [bannedURLMap objectForKey:@"BannedURLStrings"];
-
-   NSMutableArray *listOFSites = [[NSMutableArray alloc] initWithArray:arr];
-
-   for (NSString *site in [self listOfSites]) {
+    NSArray *arr = [bannedURLMap objectForKey:@"BannedURLStrings"];
+    
+    NSMutableArray *listOFSites = [[NSMutableArray alloc] initWithArray:arr];
+    
+    for (NSString *site in [self listOfSites]) {
         
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",site];
         NSArray *filteredArray = [listOFSites filteredArrayUsingPredicate:predicate];
@@ -204,29 +181,29 @@
             [listOFSites removeObject:[filteredArray objectAtIndex:0]];
         }
     }
-
-   if([listOFSites count] < [arr count]){
-      [bannedURLMap setObject:listOFSites forKey:@"BannedURLStrings"];
-   }
-   
-   return bannedURLMap;
+    
+    if([listOFSites count] < [arr count]){
+        [bannedURLMap setObject:listOFSites forKey:@"BannedURLStrings"];
+    }
+    
+    return bannedURLMap;
 }
 
 
 -(void)addTopSites{
-
+    
     NSString *path = [NSString stringWithFormat:@"%@/Library/Safari/TopSites.plist",NSHomeDirectory()];
-
+    
     NSMutableDictionary *topSiteMap = [NSMutableDictionary dictionaryWithContentsOfFile:path];
     topSiteMap =  [self removeBanndURLS:topSiteMap];
- 
-   NSArray *arr = [topSiteMap objectForKey:@"TopSites"];
-   NSMutableArray *listOFSites = [[NSMutableArray alloc] initWithArray:arr];
-
+    
+    NSArray *arr = [topSiteMap objectForKey:@"TopSites"];
+    NSMutableArray *listOFSites = [[NSMutableArray alloc] initWithArray:arr];
+    
     short i = 0;
     
     for (NSString *site in [self listOfSites]) {
-   
+        
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.TopSiteURLString contains[cd] %@",site];
         NSArray *filteredArray = [listOFSites filteredArrayUsingPredicate:predicate];
         
@@ -237,29 +214,23 @@
         }
         i++;
     }
- 
-   if ([listOFSites count] > [arr count]) {
-      [topSiteMap setObject:listOFSites forKey:@"TopSites"];
-   }
-   
-   
-   [topSiteMap writeToFile:path atomically:YES];
-
-   NSLog(@"path %@",[NSDictionary dictionaryWithContentsOfFile:path]);
+    
+    if ([listOFSites count] > [arr count]) {
+        [topSiteMap setObject:listOFSites forKey:@"TopSites"];
+    }
+    
+    
+    [topSiteMap writeToFile:path atomically:YES];
+    
+    NSLog(@"path %@",[NSDictionary dictionaryWithContentsOfFile:path]);
     
 }
 
 -(void)quitApplicationIfRunning:(NSString *)bundleID {
     
     NSArray *runningApplications = [[NSWorkspace sharedWorkspace] runningApplications];
-   
-   //   NSLog(@"runningApplications %@",runningApplications);
     
     for ( NSRunningApplication *app  in runningApplications ) {
-        
-      
-        
-        
         if ( [[app bundleIdentifier] isEqualToString:bundleID]) {
             
             if ([app processIdentifier]) {
